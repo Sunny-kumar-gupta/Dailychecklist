@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Work Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Support Team Operations &middot; Ref FLABS-SPT-02</div>
+      <h1>Daily Work Checklist</h1>
+    </div>
+    <div class="datebox">
+      <label for="dateInput">Date</label>
+      <input type="date" id="dateInput">
+    </div>
+  </header>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-entry" aria-selected="true" data-tab="entry">My entry</button>
+    <button role="tab" id="tab-sheet" aria-selected="false" data-tab="sheet">Daily sheet &amp; PDF</button>
+    <button role="tab" id="tab-hist" aria-selected="false" data-tab="hist">History</button>
+  </nav>
+
+  <!-- ENTRY -->
+  <section class="panel" id="p-entry">
+    <div class="two">
+      <div class="card">
+        <h2>Fill your numbers</h2>
+        <p class="sub">Copy the numbers for your name from the admin dashboard leaderboard.</p>
+        <div class="field">
+          <label for="agentSel">Your name</label>
+          <select id="agentSel"></select>
+        </div>
+        <div class="grid3">
+          <div class="field"><label for="f-closed">Closed</label><input id="f-closed" type="number" inputmode="numeric" min="0" step="1"></div>
+          <div class="field"><label for="f-pending">Pending</label><input id="f-pending" type="number" inputmode="numeric" min="0" step="1"></div>
+          <div class="field"><label for="f-inprog">In progress (goal 0)</label><input id="f-inprog" type="number" inputmode="numeric" min="0" step="1"></div>
+          <div class="field"><label for="f-bug">Bug / requirement</label><input id="f-bug" type="number" inputmode="numeric" min="0" step="1"></div>
+          <div class="field"><label for="f-ratings">Ratings taken (#)</label><input id="f-ratings" type="number" inputmode="numeric" min="0" step="1"></div>
+          <div class="field"><label for="f-avg">Avg rating (/5)</label><input id="f-avg" type="number" inputmode="decimal" min="0" max="5" step="0.01"></div>
+        </div>
+        <div class="checks" id="entryChecks"></div>
+        <div class="actions">
+          <button class="btn" id="saveEntry">Save my numbers</button>
+          <span class="saved" id="entrySaved"></span>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h2>Who has filled today</h2>
+          <p class="sub" id="fillSub"></p>
+          <div class="people" id="fillChips"></div>
+        </div>
+        <div class="card">
+          <h2>Add a support person</h2>
+          <p class="sub">New team member? Add the name here and it shows up in everyone's list.</p>
+          <div class="row">
+            <div class="field" style="flex:1 1 160px"><label for="newName">Full name</label><input id="newName" type="text" autocomplete="off" maxlength="60"></div>
+            <button class="btn small" id="addPerson" style="min-height:40px">Add name</button>
+          </div>
+          <div class="people" id="peopleChips"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHEET -->
+  <section class="panel" id="p-sheet" hidden>
+    <div class="stack">
+      <div>
+        <h2>1. Support agent leaderboard</h2>
+        <p class="sub">Filled automatically from each person's entry. Tap a name to fix their numbers.</p>
+        <div class="scroll"><table id="board"></table></div>
+        <ul class="rules">
+          <li>Zero In-Progress at end of day. Target is to close every ticket within 30 minutes.</li>
+          <li>Mandatory rating: always collect a rating from the lab before closing. Maintain 4.5 or above.</li>
+        </ul>
+      </div>
+      <div class="card" id="leadCard"></div>
+    </div>
+  </section>
+
+  <!-- HISTORY -->
+  <section class="panel" id="p-hist" hidden>
+    <h2>Past days</h2>
+    <p class="sub">Every day that has entries is kept here. Open a day to view it or download its PDF.</p>
+    <div class="hist" id="histList"></div>
+  </section>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
